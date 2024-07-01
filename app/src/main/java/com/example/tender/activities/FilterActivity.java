@@ -2,13 +2,13 @@ package com.example.tender.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tender.R;
+import com.example.tender.fragments.MainActivity;
 
 public class FilterActivity extends AppCompatActivity {
 

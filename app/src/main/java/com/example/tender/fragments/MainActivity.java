@@ -1,11 +1,13 @@
-package com.example.tender.activities;
+package com.example.tender.fragments;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -73,6 +75,28 @@ public class MainActivity extends AppCompatActivity {
 
         fetchAndLogUserData();
     }
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setMessage("Bạn có muốn thoát không?")
+                .setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Đóng tất cả các Activity và thoát ứng dụng
+                        finishAffinity();
+                    }
+                })
+                .setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Đóng hộp thoại và không làm gì cả
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
+
+
 
     private void fetchAndLogUserData() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();

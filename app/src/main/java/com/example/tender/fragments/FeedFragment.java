@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tender.R;
-import com.example.tender.activities.MainActivity;
 import com.example.tender.adapters.MatchListAdapter;
 import com.example.tender.entities.Match;
 

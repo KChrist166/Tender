@@ -1,26 +1,45 @@
 {
   "project_info": {
-    "project_number": "300002061103",
-    "project_id": "tender-5b854",
-    "storage_bucket": "tender-5b854.appspot.com"
+    "project_number": "835000998651",
+    "firebase_url": "https://tender-ff183-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "tender-ff183",
+    "storage_bucket": "tender-ff183.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:300002061103:android:255efe548f426885238fda",
+        "mobilesdk_app_id": "1:835000998651:android:d1f5f0f890965c4843ee5e",
         "android_client_info": {
           "package_name": "com.example.tender"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "835000998651-erkbc79ccc2l5hc96lglspa49k1ffal7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tender",
+            "certificate_hash": "44e68228fe2d97833faf6f6b5e26a97cae653449"
+          }
+        },
+        {
+          "client_id": "835000998651-li29dublbm1a22loah533q4353rs8jnv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyAgG-VwNVnqFMHNNxcAx_uKqM2kMjGiJRQ"
+          "current_key": "AIzaSyCVyqUFnGR1nXE_6cdLKS40MzGADj6Vmmw"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "835000998651-li29dublbm1a22loah533q4353rs8jnv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

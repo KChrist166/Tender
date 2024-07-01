@@ -12,10 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
 import com.example.tender.R;
-import com.example.tender.activities.MainActivity;
 import com.example.tender.adapters.LikeAdapter;
 import com.example.tender.adapters.MessageListAdapter;
 import com.example.tender.entities.Like;

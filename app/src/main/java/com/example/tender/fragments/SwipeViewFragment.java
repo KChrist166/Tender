@@ -15,6 +15,7 @@ import com.example.tender.R;
 import com.example.tender.activities.FilterActivity;
 import com.example.tender.adapters.CardStackAdapter;
 import com.example.tender.entities.CardItem;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
 import com.yuyakaido.android.cardstackview.CardStackView;
 import com.yuyakaido.android.cardstackview.StackFrom;
@@ -27,11 +28,12 @@ public class SwipeViewFragment extends Fragment {
 
     private CardStackView cardStackView;
     private ImageButton filterButton;
+    FloatingActionButton fabBack;
     View rootLayout;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootLayout = inflater.inflate(R.layout.fragment_swipe_view, container, false);
-
+        fabBack = rootLayout.findViewById(R.id.fabBack);
         filterButton = rootLayout.findViewById(R.id.filterBtn);
         filterButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,7 +43,15 @@ public class SwipeViewFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
+        fabBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<CardItem> newItems = createCardItems();
+                CardStackAdapter adapter = new CardStackAdapter(newItems);
+                cardStackView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+            }
+        });
         return rootLayout;
 
     }
