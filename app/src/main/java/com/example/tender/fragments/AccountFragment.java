@@ -7,28 +7,28 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.HorizontalScrollView;
+import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-//import com.smarteist.autoimageslider.IndicatorAnimations;
-//import com.smarteist.autoimageslider.SliderAnimations;
-//import com.smarteist.autoimageslider.SliderView;
 import com.example.tender.R;
 import com.example.tender.activities.EditProfileActivity;
+import com.example.tender.activities.SaveNameActivity;
+
 import com.example.tender.activities.SplashscreenActivity;
-//import com.thecode.tinderclone.adapters.SliderAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class AccountFragment extends Fragment {
 
     private ImageButton editBtn;
     // For test some funcs, modify this button later
     private ImageButton uploadBtn;
+    private ImageButton savenameBtn;
+    private EditText editName;
     View rootLayout;
 //    private SliderView sliderView;
 
@@ -45,6 +45,9 @@ public class AccountFragment extends Fragment {
 
         editBtn = rootLayout.findViewById(R.id.edit_button);
         uploadBtn = rootLayout.findViewById(R.id.upload_button);
+        savenameBtn = rootLayout.findViewById(R.id.buttonSaveName);
+        editName = rootLayout.findViewById(R.id.name_text);
+
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,6 +63,16 @@ public class AccountFragment extends Fragment {
                 Log.d("TExt","Called");
                 NavHostFragment.findNavController(AccountFragment.this)
                         .navigate(R.id.action_chatListFragment_to_chatBoxFragment);
+            }
+        });
+
+        savenameBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!editName.getText().toString().equals("Enter Name, Age")) {
+                    Intent intent = new Intent(getActivity(), SaveNameActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 

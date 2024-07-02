@@ -29,6 +29,7 @@
         <activity android:name=".fragments.MainActivity"></activity>
         <activity android:name=".activities.FilterActivity"></activity>
         <activity android:name=".activities.EditProfileActivity"></activity>
+        <activity android:name=".activities.SaveNameActivity"></activity>
     </application>
 
 </manifest>

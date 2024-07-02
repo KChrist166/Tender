@@ -58,16 +58,31 @@
             app:strokeWidth="5dp"/>
 
         <!-- Name TextView -->
-        <TextView
+        <EditText
             android:id="@+id/name_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/profile_image"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="16dp"
-            android:text="John Doe, 20"
+            android:text="Enter Name, Age"
             android:textColor="@android:color/black"
             android:textSize="18sp"/>
+
+        <!-- Save button -->
+        <ImageButton
+            android:id="@+id/buttonSaveName"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_alignBottom="@id/name_text"
+            android:layout_marginStart="30dp"
+            android:layout_marginBottom="8dp"
+            android:layout_toEndOf="@id/name_text"
+            android:background="@drawable/rounded_corner_image_button"
+            android:gravity="start"
+            android:padding="3dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/save_button" />
 
         <!-- Edit button -->
         <ImageButton

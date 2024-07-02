@@ -17,15 +17,16 @@ import com.example.tender.adapters.ProfileImageAdapter;
 import com.example.tender.fragments.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EditProfileActivity extends AppCompatActivity {
 
@@ -37,8 +38,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private ImageButton saveProfileBtn;
 
-    FirebaseDatabase firebaseDatabase;
-    DatabaseReference usersDbRef;
+    FirebaseFirestore firestoreDatabase;
     String uid;
 
     @Override
@@ -46,7 +46,7 @@ public class EditProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        firestoreDatabase = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
         if (user != null) {
@@ -55,7 +55,6 @@ public class EditProfileActivity extends AppCompatActivity {
             Toast.makeText(this, "User not authenticated", Toast.LENGTH_SHORT).show();
             return;
         }
-        usersDbRef = firebaseDatabase.getReference("Profiles");
 
         rcvImage = findViewById(R.id.recycler_image);
         mImageAdapter = new ProfileImageAdapter(this);
@@ -92,6 +91,7 @@ public class EditProfileActivity extends AppCompatActivity {
             Intent intent = new Intent(EditProfileActivity.this, MainActivity.class);
             startActivity(intent);
         });
+
         loadProfileData();
     }
 
@@ -116,7 +116,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private void saveProfile(String zodiac, String study, String character, String nickname, String living, String work, String self, String hobbies) {
         List<Uri> changedImages = mImageAdapter.getChangedImages();
 
-        HashMap<String, Object> profileData = new HashMap<>();
+        Map<String, Object> profileData = new HashMap<>();
         profileData.put("zodiac", zodiac);
         profileData.put("study", study);
         profileData.put("character", character);
@@ -132,39 +132,38 @@ public class EditProfileActivity extends AppCompatActivity {
         }
         profileData.put("changedImages", imageUrls);
 
-        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Profiles").child(uid);
-        usersRef.setValue(profileData)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(EditProfileActivity.this, "Profile saved successfully", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(EditProfileActivity.this, "Failed to save profile", Toast.LENGTH_SHORT).show();
-                    }
-                });
+        DocumentReference userRef = firestoreDatabase.collection("user").document(uid);
+        userRef.set(profileData).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(EditProfileActivity.this, "Profile saved successfully", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(EditProfileActivity.this, "Failed to save profile", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void loadProfileData() {
-        DatabaseReference profileRef = FirebaseDatabase.getInstance().getReference("Profiles").child(uid);
-        profileRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        DocumentReference profileRef = firestoreDatabase.collection("user").document(uid);
+        profileRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    String zodiac = snapshot.child("zodiac").getValue(String.class);
-                    String study = snapshot.child("study").getValue(String.class);
-                    String character = snapshot.child("character").getValue(String.class);
-                    String nickname = snapshot.child("nickname").getValue(String.class);
-                    String living = snapshot.child("living").getValue(String.class);
-                    String work = snapshot.child("work").getValue(String.class);
-                    String self = snapshot.child("self").getValue(String.class);
-                    String hobbies = snapshot.child("hobbies").getValue(String.class);
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful() && task.getResult() != null) {
+                    DocumentSnapshot snapshot = task.getResult();
+                    if (snapshot.exists()) {
+                        String zodiac = snapshot.getString("zodiac");
+                        String study = snapshot.getString("study");
+                        String character = snapshot.getString("character");
+                        String nickname = snapshot.getString("nickname");
+                        String living = snapshot.getString("living");
+                        String work = snapshot.getString("work");
+                        String self = snapshot.getString("self");
+                        String hobbies = snapshot.getString("hobbies");
 
-                    setProfileDataToUI(zodiac, study, character, nickname, living, work, self, hobbies);
+                        setProfileDataToUI(zodiac, study, character, nickname, living, work, self, hobbies);
+                    }
+                } else {
+                    Toast.makeText(EditProfileActivity.this, "Failed to load profile data", Toast.LENGTH_SHORT).show();
                 }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(EditProfileActivity.this, "Failed to load profile data", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -188,5 +187,4 @@ public class EditProfileActivity extends AppCompatActivity {
         editSelf.setText(self);
         editHobbies.setText(hobbies);
     }
-
 }
